@@ -11,8 +11,18 @@ app.use(express.static('public'));
 app.use(require('./routes'));
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pizza-hunt', {
   useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  },
+  function(err, database) {
+    if(err) {
+      if (process.env.DEBUG) {
+      throw err;
+      }
+      return;
+    }
+  });
 // logs mongo queries being executed
 mongoose.set('debug', true);
 
